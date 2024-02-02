@@ -182,7 +182,7 @@ let tryShiftVerticalSeg (model: Model) (intersectedBoxes: BoundingBox list) (wir
             (swapXY viablePos wire.InitialOrientation).X
             - (swapXY wireVertices[4] wire.InitialOrientation).X
 
-        shiftVerticalSeg amountToShift
+        shiftVerticalSeg <| amountToShift*2.
 
     let tryShiftLeftWire = tryShiftWireVert Left_
     let tryShiftRightWire = tryShiftWireVert Right_
@@ -325,7 +325,7 @@ let rec tryShiftHorizontalSeg
             let offsetOfBox, otherDir =
                 match direction with
                 | Up_ -> (fun _ -> 0.), Left_
-                | Down_ -> (fun box -> getOppositeWOrH box), Right_
+                | Down_ -> (fun (box: BoundingBox) -> getOppositeWOrH box), Right_
                 | _ -> failwithf "What? Can't happen"
 
             let boundBox =
@@ -343,7 +343,7 @@ let rec tryShiftHorizontalSeg
                     | Horizontal -> direction
                     | Vertical -> otherDir
 
-                let initialAttemptPos = updatePos otherOrientation offset boundBox.TopLeft
+                let initialAttemptPos = updatePos otherOrientation (offset*2.) boundBox.TopLeft
                 initialAttemptPos |> getOppositeXOrY
 
             let firstVerticalSegLength, secondVerticalSegLength =
@@ -497,7 +497,7 @@ let smartAutoroute (model: Model) (wire: Wire) : Wire =
         | _ -> initialWire // do not snap
         //| true -> snapToNet model initialWire
 
-    let intersectedBoxes = findWireSymbolIntersections model snappedToNetWire 
+    let intersectedBoxes = findWireSymbolIntersections model snappedToNetWire         
 
     match intersectedBoxes.Length with
     | 0 -> snappedToNetWire

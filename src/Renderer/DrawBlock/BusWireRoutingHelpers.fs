@@ -107,7 +107,7 @@ let fixBoundingBox (box: BoundingBox): BoundingBox =
 
 module Constants =
     let wireSeparationFromSymbol = 7. // must be smaller than Buswire.nubLength
-    let maxCallsToShiftHorizontalSeg = 5
+    let maxCallsToShiftHorizontalSeg = 10
     /// Must be smaller than Buswire.nubLength
     let minWireSeparation = 7.
     let smallOffset = 0.0001
